@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  DemoGoogleMaps
 //
-//  Created by dohien on 13/09/2018.
+//  Created by dohien on 14/09/2018.
 //  Copyright © 2018 dohien. All rights reserved.
 //
 
@@ -46,17 +46,23 @@ class ViewController: UIViewController, CLLocationManagerDelegate{
         let camera = GMSCameraPosition.camera(withLatitude: -38.86 ,
                                               longitude: 151.20,
                                               zoom: 6.0)
-        let marker = GMSMarker()
-        marker.position = CLLocationCoordinate2D(latitude: -38.86, longitude: 151.20)
         mapView = GMSMapView.map(withFrame: view.bounds, camera: camera)
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         // Add the map to the view, hide it until we've got a location update.
         view.addSubview(mapView)
+        mapView.settings.myLocationButton = true
+        mapView.isMyLocationEnabled = true
+        mapView.delegate = self
+        if CLLocationManager.authorizationStatus() != .authorizedWhenInUse {
+            locationManager.requestWhenInUseAuthorization()
+        } else {
+            locationManager.startUpdatingLocation()
+        }
         mapView.isHidden = true
-        marker.map = mapView
         listLikelyPlaces()
         // Do any additional setup after loading the view, typically from a nib.
     }
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -118,11 +124,18 @@ class ViewController: UIViewController, CLLocationManagerDelegate{
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "segueToSelect" {
-            if let nextViewController = segue.destination as? PlacesViewController {
+            if let nextViewController = segue.destination as? DetailViewController {
                 nextViewController.likelyPlaces = likelyPlaces
             }
         }
     }
-
 }
+extension ViewController: GMSMapViewDelegate {
+    func mapView(_ mapView: GMSMapView, didLongPressAt coordinate: CLLocationCoordinate2D) {
+        let marker = GMSMarker()
+        marker.position = CLLocationCoordinate2D(latitude: -33.86, longitude: 151.20)
+        marker.map = mapView
+    }
+}
+
 
