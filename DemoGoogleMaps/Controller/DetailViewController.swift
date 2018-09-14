@@ -12,11 +12,12 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     var likelyPlaces: [GMSPlace] = []
     var selectedPlace: GMSPlace?
-    let cellReuseIdentifer = "cell"
+  
     @IBOutlet weak var tableview: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableview.register(UITableViewCell.self, forCellReuseIdentifier: cellReuseIdentifer)
+        tableview.delegate = self
+        tableview.dataSource = self
         tableview.reloadData()
         // Do any additional setup after loading the view.
     }
@@ -48,7 +49,7 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifer, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         let collectionItem = likelyPlaces[indexPath.row]
         
         cell.textLabel?.text = collectionItem.name
@@ -56,15 +57,5 @@ class DetailViewController: UIViewController, UITableViewDelegate, UITableViewDa
         return cell
         
     }
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    return tableView.frame.size.height/5
-    }
-    
-    // Make table rows display at proper height if there are less than 5 items.
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-    if (section == tableView.numberOfSections - 1) {
-    return 1
-    }
-    return 0
-    }
+
 }

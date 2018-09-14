@@ -10,6 +10,11 @@ import UIKit
 import GoogleMaps
 import GooglePlaces
 class ViewController: UIViewController, CLLocationManagerDelegate{
+    
+    var resultsViewController: GMSAutocompleteResultsViewController?
+    var searchController: UISearchController?
+    var resultView: UITextView?
+    
     var locationManager = CLLocationManager()
     var currentLocation: CLLocation?
     var mapView: GMSMapView!
@@ -17,6 +22,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate{
     var zoomLevel: Float = 15.0
     var likelyPlaces: [GMSPlace] = []
     var selectedPlace: GMSPlace?
+     let defaultLocation = CLLocation(latitude: 20.998885, longitude: 105.813083)
     @IBAction func unwindToMain(segue: UIStoryboardSegue) {
         // Clear the map.
         mapView.clear()
@@ -33,6 +39,23 @@ class ViewController: UIViewController, CLLocationManagerDelegate{
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        resultsViewController = GMSAutocompleteResultsViewController()
+        resultsViewController?.delegate = self
+        searchController = UISearchController(searchResultsController: resultsViewController)
+        searchController?.searchResultsUpdater = resultsViewController
+        // Put the search bar in the navigation bar
+        
+        searchController?.searchBar.frame = (CGRect(x: 0, y: 0, width: 250.0, height: 44.0))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: (searchController?.searchBar)!)
+        
+        // When UISearchController presents the results view, present it in
+        // this view controller, not one further up the chain.
+        
+        definesPresentationContext = true
+        //Prevent the navigation bar from being hidden when searching
+        searchController?.hidesNavigationBarDuringPresentation = false
+        
+        searchController?.modalPresentationStyle = .popover
         
         locationManager = CLLocationManager()
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -40,13 +63,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate{
         locationManager.distanceFilter = 50
         locationManager.startUpdatingLocation()
         locationManager.delegate = self
-        
         placesClient = GMSPlacesClient.shared()
         // creat a map
-        let camera = GMSCameraPosition.camera(withLatitude: -38.86 ,
-                                              longitude: 151.20,
-                                              zoom: 6.0)
+        let camera = GMSCameraPosition.camera(withLatitude: defaultLocation.coordinate.latitude ,
+                                              longitude: defaultLocation.coordinate.longitude,
+                                              zoom: 15.0)
         mapView = GMSMapView.map(withFrame: view.bounds, camera: camera)
+        mapView.clear()
+        mapView.animate(toViewingAngle: 45)
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         // Add the map to the view, hide it until we've got a location update.
         view.addSubview(mapView)
@@ -58,21 +82,26 @@ class ViewController: UIViewController, CLLocationManagerDelegate{
         } else {
             locationManager.startUpdatingLocation()
         }
-        mapView.isHidden = true
+       
         listLikelyPlaces()
         // Do any additional setup after loading the view, typically from a nib.
     }
     
+    @IBAction func searchWithAddress(_ sender: UIBarButtonItem) {
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let location: CLLocation = locations.last!
+        let location: CLLocation = locations.first!
         print("Location: \(location)")
-        let camera = GMSCameraPosition.camera(withLatitude: location.coordinate.latitude, longitude: location.coordinate.longitude, zoom: zoomLevel)
         
+        let camera = GMSCameraPosition.camera(withLatitude: defaultLocation.coordinate.latitude,
+                                              longitude: defaultLocation.coordinate.longitude,
+                                              zoom: zoomLevel)
+
         if mapView.isHidden {
             mapView.isHidden = false
             mapView.camera = camera
@@ -129,13 +158,19 @@ class ViewController: UIViewController, CLLocationManagerDelegate{
             }
         }
     }
+    @IBAction func autocompleteClicked(_ sender: UIButton) {
+        let autocompleteController = GMSAutocompleteViewController()
+        autocompleteController.delegate = self
+        present(autocompleteController, animated: true, completion: nil)
+    }
 }
 extension ViewController: GMSMapViewDelegate {
     func mapView(_ mapView: GMSMapView, didLongPressAt coordinate: CLLocationCoordinate2D) {
         let marker = GMSMarker()
-        marker.position = CLLocationCoordinate2D(latitude: -33.86, longitude: 151.20)
+        marker.position = CLLocationCoordinate2D(latitude: defaultLocation.coordinate.latitude, longitude: defaultLocation.coordinate.longitude)
         marker.map = mapView
     }
 }
+
 
 

@@ -21,13 +21,9 @@
                         <viewLayoutGuide key="safeArea" id="Ma0-mA-Fuh"/>
                     </view>
                     <navigationItem key="navigationItem" id="i4r-q4-Q4u">
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="ta6-8A-btt">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="mxr-Si-pol">
-                                <rect key="frame" x="276" y="7" width="83" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                            </button>
+                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="search" id="ta6-8A-btt">
                             <connections>
+                                <action selector="searchWithAddress:" destination="HE4-6O-irt" id="iK9-Mm-T0o"/>
                                 <segue destination="Eom-yy-ikw" kind="show" identifier="segueToSelect" id="ZAw-Xh-rgh"/>
                             </connections>
                         </barButtonItem>
@@ -48,6 +44,19 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="q97-nZ-7ZZ">
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" id="2Ck-ij-r9B">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="2Ck-ij-r9B" id="ZI7-Be-wUg">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="c21-Ze-HQh" kind="unwind" identifier="unwindToMain" unwindAction="unwindToMainWithSegue:" id="hn2-8A-S00"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="Eom-yy-ikw" id="TdZ-0H-lXx"/>
                                     <outlet property="delegate" destination="Eom-yy-ikw" id="c5h-VD-xfq"/>
@@ -69,8 +78,9 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="APZ-Sz-1GB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="c21-Ze-HQh" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="3508" y="161"/>
+            <point key="canvasLocation" x="3401" y="161"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="C6U-rg-jXE">
