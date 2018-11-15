@@ -32,6 +32,7 @@
 		80E96712214BBFF000FAAB68 /* ExtensionAutocompleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionAutocompleteViewController.swift; sourceTree = "<group>"; };
 		80E96714214BC09D00FAAB68 /* ExtensionAutocompleteResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionAutocompleteResultsViewController.swift; sourceTree = "<group>"; };
 		8C1B7A7590F267254EDF722F /* Pods-DemoGoogleMaps.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DemoGoogleMaps.release.xcconfig"; path = "Pods/Target Support Files/Pods-DemoGoogleMaps/Pods-DemoGoogleMaps.release.xcconfig"; sourceTree = "<group>"; };
+		B3087F0D219D7FF0004204F4 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +59,7 @@
 		801BCAA1214A478C00E32012 = {
 			isa = PBXGroup;
 			children = (
+				B3087F0D219D7FF0004204F4 /* README.md */,
 				801BCAAC214A478C00E32012 /* DemoGoogleMaps */,
 				801BCAAB214A478C00E32012 /* Products */,
 				3AEE94E1E7FAE186AEFD6D92 /* Pods */,
